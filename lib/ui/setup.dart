@@ -14,11 +14,13 @@ class SetupState extends State<Setup> {
     new TextEditingController(),
     new TextEditingController(),
     new TextEditingController(),
-    new TextEditingController()
+    new TextEditingController(),
+    new TextEditingController(),
   ];
   final _formKey = GlobalKey<FormState>();
   bool chk = false;
   UserProvider user = UserProvider();
+  bool exist = false;
 
   int space(String val) {
     int _temp = 0;
@@ -50,8 +52,7 @@ class SetupState extends State<Setup> {
                       controller: txtControl[0],
                       decoration: InputDecoration(
                           hintText: "User Id",
-                          border: new OutlineInputBorder()
-                        ),
+                          border: new OutlineInputBorder()),
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -69,8 +70,7 @@ class SetupState extends State<Setup> {
                     TextFormField(
                       controller: txtControl[1],
                       decoration: InputDecoration(
-                          hintText: "Name",
-                          border: new OutlineInputBorder()),
+                          hintText: "Name", border: new OutlineInputBorder()),
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -85,8 +85,7 @@ class SetupState extends State<Setup> {
                     TextFormField(
                       controller: txtControl[2],
                       decoration: InputDecoration(
-                          hintText: "Age",
-                          border: new OutlineInputBorder()),
+                          hintText: "Age", border: new OutlineInputBorder()),
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value.isEmpty) {
@@ -118,7 +117,6 @@ class SetupState extends State<Setup> {
                         }
                       },
                     ),
-                    
                     Container(
                       height: 150,
                       child: new ConstrainedBox(
@@ -132,6 +130,7 @@ class SetupState extends State<Setup> {
                             child: SizedBox(
                               height: 140.0,
                               child: new TextField(
+                                controller: txtControl[4],
                                 maxLines: 100,
                                 decoration: new InputDecoration(
                                   border: new OutlineInputBorder(),
@@ -143,35 +142,48 @@ class SetupState extends State<Setup> {
                         ),
                       ),
                     ),
-
                     Container(
                       margin: EdgeInsets.fromLTRB(40, 20, 30, 0),
                       child: RaisedButton(
                         child: Text("Save"),
                         onPressed: () async {
-                          if (!_formKey.currentState.validate()) {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text('กรุณาระบุข้อมูลให้ครบถ้วน')));
-                          } else if (chk == true) {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text('user นี้มีอยู่ในระบบแล้ว')));
-                          } else {
+                           
                             await user.open("user.db");
                             User userData = User();
                             userData.user_id = txtControl[0].text;
                             userData.name = txtControl[1].text;
                             userData.age = txtControl[2].text;
                             userData.password = txtControl[3].text;
+                            userData.quote = txtControl[4].text;
 
-                            txtControl[0].text = "";
-                            txtControl[1].text = "";
-                            txtControl[2].text = "";
-                            txtControl[3].text = "";
-                            await user.insertUser(userData);
-                            Navigator.pop(context);
-                            print(userData);
-                            Navigator.pushNamed(context, '/');
-                          }
+                            Future<List<User>> _all = user.getAll();
+                            Future temp(User user) async {
+                              var userList = await _all;
+                              for (var i = 0; i < userList.length; i++) {
+                                if (user.user_id == userList[i].user_id &&
+                                    CurrentUser.ID != userList[i].id) {
+                                  this.exist = true;
+                                  break;
+                                }
+                              }
+                            }
+
+                            if (_formKey.currentState.validate()) {
+                              await temp(userData);
+                              if (!this.exist) {
+                                await user.updateUser(userData);
+                                CurrentUser.USERID = userData.user_id;
+                                CurrentUser.NAME = userData.name;
+                                CurrentUser.AGE = userData.age;
+                                CurrentUser.PASSWORD = userData.password;
+                                CurrentUser.QUOTE = userData.quote;
+                                
+                                Navigator.pop(context);
+                              }
+                            }
+
+                            this.exist = false;
+
                         },
                       ),
                     ),

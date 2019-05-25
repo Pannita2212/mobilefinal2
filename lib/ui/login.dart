@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
 import '../model/db.dart';
 
 class LogIn extends StatefulWidget {
@@ -91,10 +90,10 @@ class LogInState extends State<LogIn> {
                     onPressed: () async {
                       _formKey.currentState.validate();
                       await user.open("user.db");
-                      Future<List<User>> allUser = user.getAll();
+                      Future<List<User>> _all = user.getAll();
 
-                      Future isUserValid(String userid, String password) async {
-                        var userList = await allUser;
+                      Future isValid(String userid, String password) async {
+                        var userList = await _all;
                         for (var i = 0; i < userList.length; i++) {
                           if (userid == userList[i].user_id &&
                               password == userList[i].password) {
@@ -116,7 +115,7 @@ class LogInState extends State<LogIn> {
                         this.formState = 0;  
                       } else {
                         this.formState = 0;
-                        await isUserValid(txtControl[0].text, txtControl[1].text);
+                        await isValid(txtControl[0].text, txtControl[1].text);
 
 
                         if (!this.isValid) {

@@ -35,7 +35,7 @@ class HomeState extends State<Home> {
             RaisedButton(
               child: Text("MY FRIENDS"),
               onPressed: () {
-                // Navigator.of(context).pushNamed('/friend');
+                Navigator.of(context).pushNamed('/friend');
               },
             ),
             RaisedButton(
