@@ -51,9 +51,7 @@ class LogInState extends State<LogIn> {
                       } else{
                         this.formState += 1;
                       }
-                      // else if (value.compareTo("admin") == 0) {
-                      //   chk[0] = true;
-                      // }
+                      
                     },
                   ),
                 ),
