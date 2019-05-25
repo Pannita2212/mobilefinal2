@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './ui/login.dart';
 import './ui/register.dart';
 import './ui/home.dart';
+import './ui/setup.dart';
+import './ui/friend.dart';
 
 void main() => runApp(MyApp());
 
@@ -21,7 +23,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => LogIn(),
         '/register': (context) => Register(),
         '/home': (context) => Home(),
-        // '/login': (context) => LogIn()
+        '/setup': (context) => Setup(),
+        '/freind': (context) => Friend(),
+
       },
     );
   }

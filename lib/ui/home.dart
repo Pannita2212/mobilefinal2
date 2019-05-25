@@ -24,19 +24,18 @@ class HomeState extends State<Home> {
           children: <Widget>[
             ListTile(
               title: Text('Hello ${CurrentUser.NAME}'),
-              subtitle: Text('this is my quote "${CurrentUser.QUOTE != null ? CurrentUser.QUOTE == '' ? 'ยังไม่มีการระบุข้อมูล' : CurrentUser.QUOTE : 'ยังไม่มีการระบุข้อมูล'}"'),
+              subtitle: Text('this is my quote "${CurrentUser.QUOTE != null ? CurrentUser.QUOTE == '' ? 'today is my day' : CurrentUser.QUOTE : 'today is my day'}"'),
             ),
             RaisedButton(
               child: Text("PROFILE SETUP"),
               onPressed: () {
-                Navigator.of(context).pushNamed('/profile');
+                Navigator.of(context).pushNamed('/setup');
               },
             ),
             RaisedButton(
               child: Text("MY FRIENDS"),
               onPressed: () {
-                // Navigator.of(context).pushReplacementNamed('/friend');
-                Navigator.of(context).pushNamed('/friend');
+                // Navigator.of(context).pushNamed('/friend');
               },
             ),
             RaisedButton(

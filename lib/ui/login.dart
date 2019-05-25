@@ -105,16 +105,14 @@ class LogInState extends State<LogIn> {
                             CurrentUser.PASSWORD = userList[i].password;
                             CurrentUser.QUOTE = userList[i].quote;
                             this.isValid = true;
-                            print("this user valid");
                             break;
                           }
                         }
                       }
 
                       if (this.formState != 2) {
-                        Toast.show("Please fill out this form", context,
-                            duration: Toast.LENGTH_SHORT,
-                            gravity: Toast.BOTTOM);
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            content: Text("Please fill out this form")));
                         this.formState = 0;  
                       } else {
                         this.formState = 0;
@@ -122,9 +120,9 @@ class LogInState extends State<LogIn> {
 
 
                         if (!this.isValid) {
-                          Toast.show("Invalid user or password", context,
-                              duration: Toast.LENGTH_SHORT,
-                              gravity: Toast.BOTTOM);
+                          Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text("Invalid user or password"),
+                          ));
                         } else {
                           Navigator.pushReplacementNamed(context, '/home');
                           txtControl[0].text = "";
@@ -132,32 +130,6 @@ class LogInState extends State<LogIn> {
                         }
                       }
 
-                      Future showAllUser() async {
-                        var userList = await allUser;
-                        for (var i = 0; i < userList.length; i++) {
-                          print(userList[i]);
-                        }
-                      }
-                      showAllUser();
-                      print(CurrentUser.whoCurrent());
-
-                      // if (!_formKey.currentState.validate()) {
-                      //   Scaffold.of(context).showSnackBar(SnackBar(
-                      //       content: Text("Please fill out this form")));
-                      // } else if (chk[0] == true && chk[1] == false) {
-                      //   Scaffold.of(context).showSnackBar(SnackBar(
-                      //       content: Text("user or password ไม่ถูกต้อง")));
-                      // } else if (chk[1] == true && chk[0] == false) {
-                      //   Scaffold.of(context).showSnackBar(SnackBar(
-                      //     content: Text("user or password ไม่ถูกต้อง"),
-                      //   ));
-                      // } else if (chk[1] == true && chk[0] == true) {
-                      //   Navigator.pushNamed(context, "/home");
-                      // } else {
-                      //   Scaffold.of(context).showSnackBar(SnackBar(
-                      //     content: Text("user or password ไม่ถูกต้อง"),
-                      //   ));
-                      // }
                       chk[0] = false;
                       chk[1] = false;
                     },
